@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Set the input and output directories
+input_dir="input"
+output_dir="output"
+
+# Check if the output directory exists, if not create it
+if [ ! -d "$output_dir" ]; then
+    mkdir -p "$output_dir"
+fi
+
+# Loop through all the WAV files in the input directory and convert them to MP3
+for file in "$input_dir"/*.wav; do
+    # Get the base filename and extension of the input file
+    filename=$(basename -- "$file")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+
+    # Set the output file path
+    output_file="$output_dir/${filename,,}.mp3"
+
+    # Convert the file using FFmpeg
+    ffmpeg -i "$file" -codec:a libmp3lame -qscale:a 2 "$output_file"
+
+    # Check if the conversion was successful, if not print an error message
+    if [ $? -eq 0 ]; then
+        echo "Converted $filename.$extension to ${filename,,}.mp3"
+    else
+        echo "Error converting $filename.$extension to ${filename,,}.mp3"
+    fi
+done
