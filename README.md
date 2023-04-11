@@ -11,6 +11,7 @@ sudo apt update
 
 sudo apt install ffmpeg libavcodec-extra libavformat-extra libavutil-dev libswscale-dev
 
+pip install pydub
 
 ffmpeg -version
 
